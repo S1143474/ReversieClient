@@ -58,7 +58,6 @@ Game.Reversi = (() => {
         }
 
         Game.Model.putNewMove(data).then(result => {
-
             if (result.executed === true) { 
                 fiche.showFiche(configMap.currentPlayer); 
 
@@ -66,8 +65,6 @@ Game.Reversi = (() => {
                     console.log(cell);
                 }
             }
-
-
         });
     };
 

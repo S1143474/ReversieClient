@@ -3,14 +3,13 @@ const config = require('./config');
 
 const browserSync = require('browser-sync').create();
 
-
-const js = require('./tasks/js').js(config.localServerProjectPath, config.files.js, config.filesOrderJs);
+const js = require('./tasks/js').js(config.files.js, config.filesOrderJs);
 js.displayName = 'js';
 
-const sass = require('./tasks/sass').sass(config.localServerProjectPath, config.files.sass);
+const sass = require('./tasks/sass').sass(config.files.sass);
 sass.displayName = 'sass';
 
-const html = require('./tasks/html').html(config.files.html, config.localServerProjectPath);
+const html = require('./tasks/html').html(config.files.html);
 html.displayName = 'html';
 
 const watchFiles = () => {
