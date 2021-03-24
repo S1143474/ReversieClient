@@ -61,6 +61,8 @@ Game.Reversi = (() => {
             if (result.executed === true) { 
                 fiche.showFiche(configMap.currentPlayer); 
 
+                // Dev
+
                 for (let cell in result.cells) {
                     console.log(cell);
                 }
