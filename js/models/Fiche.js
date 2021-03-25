@@ -23,6 +23,19 @@ class Fiche {
             }
         }
     }
+
+    flip() {
+        let fiche = $(this._item).find('div')[0];
+        let ficheStyle = fiche.classList;
+
+        if (ficheStyle.contains('fiche__white')) {
+            $(fiche).removeClass('fiche__white');
+            $(fiche).addClass('fiche__black fiche__animation-black');
+        } else if (ficheStyle.contains('fiche__black')) {
+            $(fiche).removeClass('fiche__black');
+            $(fiche).addClass('fiche__white fiche__animation-white');
+        }
+    }
     
     hoverFiche(currentPlayer) {
         let fiche = $(this._item).find('div')[0];

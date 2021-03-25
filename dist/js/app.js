@@ -141,6 +141,20 @@ var Fiche = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "flip",
+    value: function flip() {
+      var fiche = $(this._item).find('div')[0];
+      var ficheStyle = fiche.classList;
+
+      if (ficheStyle.contains('fiche__white')) {
+        $(fiche).removeClass('fiche__white');
+        $(fiche).addClass('fiche__black fiche__animation-black');
+      } else if (ficheStyle.contains('fiche__black')) {
+        $(fiche).removeClass('fiche__black');
+        $(fiche).addClass('fiche__white fiche__animation-white');
+      }
+    }
+  }, {
     key: "hoverFiche",
     value: function hoverFiche(currentPlayer) {
       var fiche = $(this._item).find('div')[0];
@@ -280,7 +294,7 @@ Game.Data = function () {
 Game.Model = function () {
   var configMap = {
     baseUrl: null,
-    token: "20e6009a-84fe-4b55-98de-c2e388b3e50c"
+    token: "f20407ce-037f-41d6-98cd-ab0889c12536"
   };
 
   var privateInit = function privateInit(baseUrl) {
@@ -381,15 +395,24 @@ Game.Reversi = function () {
       X: fiche.x,
       Y: fiche.y,
       Token: null,
-      SpelerToken: "20e6009a-84fe-4b55-98de-c2e388b3e50c"
+      SpelerToken: "f20407ce-037f-41d6-98cd-ab0889c12536"
     };
     Game.Model.putNewMove(data).then(function (result) {
       if (result.executed === true) {
-        fiche.showFiche(configMap.currentPlayer);
+        fiche.showFiche(configMap.currentPlayer); //console.log(result.cells[0]);
 
-        for (var cell in result.cells) {
-          console.log(cell);
-        }
+        var _loop = function _loop(i) {
+          var tempFiche = configMap.fiches.find(function (f) {
+            return f.x == result.cells[i].x && f.y == result.cells[i].y;
+          });
+          tempFiche.flip();
+          console.log(tempFiche);
+        };
+
+        for (var i = 0; i < result.cells.length; i++) {
+          _loop(i);
+        } //console.log(fichesToTurn);
+
       }
     });
   };

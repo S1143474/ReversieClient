@@ -2,7 +2,7 @@ Game.Model = (() => {
     
     let configMap = {
         baseUrl: null,
-        token: "20e6009a-84fe-4b55-98de-c2e388b3e50c"
+        token: "f20407ce-037f-41d6-98cd-ab0889c12536"
     };
 
     const privateInit = (baseUrl) => {

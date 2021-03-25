@@ -54,18 +54,23 @@ Game.Reversi = (() => {
             X: fiche.x,
             Y: fiche.y,
             Token: null,
-            SpelerToken: "20e6009a-84fe-4b55-98de-c2e388b3e50c"
+            SpelerToken: "f20407ce-037f-41d6-98cd-ab0889c12536"
         }
 
         Game.Model.putNewMove(data).then(result => {
             if (result.executed === true) { 
                 fiche.showFiche(configMap.currentPlayer); 
 
-                // Dev
+                //console.log(result.cells[0]);
+                for (let i = 0; i < result.cells.length; i++) {
 
-                for (let cell in result.cells) {
-                    console.log(cell);
+                    let tempFiche = configMap.fiches.find(f => f.x == result.cells[i].x && f.y == result.cells[i].y);
+
+                    tempFiche.flip();
+                    console.log(tempFiche);
                 }
+
+                //console.log(fichesToTurn);
             }
         });
     };
