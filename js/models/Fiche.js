@@ -5,6 +5,7 @@ class Fiche {
         this._id = id;
         this.x = this._id % 8;
         this.y = Math.floor(this._id / 8);
+        console.log(id);
     }
   
     showFiche(currentPlayer) {
