@@ -2,7 +2,7 @@ Game.Model = (() => {
     
     let configMap = {
         baseUrl: null,
-        //token: "f20407ce-037f-41d6-98cd-ab0889c12536"
+        token: "0a232769-af48-455e-a208-242456287d69"
     };
 
     const privateInit = (baseUrl) => {
@@ -15,8 +15,7 @@ Game.Model = (() => {
     const _getGameState = () => {
         // Aanvraag via Game.Data
         let gameState = Game.Data.get(configMap.baseUrl + "Spel/Beurt/" + configMap.token);
-
-        return gameState.then(result => {   
+        return gameState.then(result => { 
             if (result.beurt > 2 || result.beurt < 0) {
                 throw new Error("De gameState waarde ligt buiten bereik");
             } else {
@@ -25,8 +24,8 @@ Game.Model = (() => {
         });
     };
 
-    const _getGameReversiViaSpelToken = (token) => {
-        let result = Game.Data.get(configMap.baseUrl + "Spel/" + token);
+    const _getGameReversiViaSpelToken = () => {
+        let result = Game.Data.get(configMap.baseUrl + "Spel/" + configMap.token);
 
         return result.then(result => {
             return result;

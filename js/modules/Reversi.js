@@ -7,11 +7,10 @@ Game.Reversi = (() => {
 
     const privateInit = (baseUrl) => {
         Game.Model.init(baseUrl);
-
         // Setup Board
         Game.Model.getGameReversiViaSpelToken().then(result => {
             // set starting player
-            configMap.currentPlayer = result.aandeBeurt;
+            configMap.currentPlayer = result.beurt;
 
             //game_info_current_turn = 
 

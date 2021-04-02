@@ -23,8 +23,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                 crossorigin="anonymous"></script>
 
-        <script type="text/javascript" src="../js/FeedbackWidget.js"></script>
-        <script type="text/javascript" src="../js/Game.js"></script>
+        <script type="text/javascript" src="../dist/js/app.js"></script>
 
     </head>
     <body>
@@ -63,26 +62,72 @@
                     let feedbackWidget = new FeedbackWidget('feedback-success');
                     feedbackWidget.hide();
 
-                    expect($('#feedback-success').attr('style')).toBe('display: none;');
+                    expect($('#feedback-success').attr('style')).toBe('display: none');
                 });
             });
 
-            describe("Game file", () => {
-                it("Game init is global accessible", () => {
-                    expect(Game.init()).toBeDefined();
+            describe("Fiche", () => {
+                it("Fiche object exists", () => {
+                    // Arrange
+                    let fiche = new Fiche("<td><div class='fiche'></div></td>", 1);
+                    
+                    // Assert
+                    expect(fiche).toBeDefined();
                 });
 
-                it("Game.Reversie init is accesible", () => {
-                    expect(Game.Reversi.init()).toBe(true);
+                describe("Fiche Coords", () => {
+                    it("(id: 1) x = 1, y = 0", () => {
+                        // Arrange
+                        let fiche = new Fiche("<td><div class='fiche'></div></td>", 1);
+                        
+                        // Act
+                        fiche.hoverFiche(1);
+
+                        // Assert
+                        expect(fiche.x).toBe(1);
+                        expect(fiche.y).toBe(0);
+                    });
+
+                    it("(id: 9) x = 1, y = 1", () => {
+                        // Arrange
+                        let fiche = new Fiche("<td><div class='fiche'></div></td>", 9);
+                        
+                        // Act
+                        fiche.hoverFiche(1);
+
+                        // Assert
+                        expect(fiche.x).toBe(1);
+                        expect(fiche.y).toBe(1);
+                    });
+
+                    it("(id: 64) x = 7, y = 7", () => {
+                        // Arrange
+                        let fiche = new Fiche("<td><div class='fiche'></div></td>", 63);
+                        
+                        // Act
+                        fiche.hoverFiche(1);
+
+                        // Assert
+                        expect(fiche.x).toBe(7);
+                        expect(fiche.y).toBe(7);
+                    });
+
+                    it("(id: 21) x = 3, y = 7", () => {
+                        // Arrange
+                        let fiche = new Fiche("<td><div class='fiche'></div></td>", 21);
+                        
+                        // Act
+                        fiche.hoverFiche(1);
+
+                        // Assert
+                        expect(fiche.x).toBe(5);
+                        expect(fiche.y).toBe(2);
+                    });
                 });
 
-                it("Game.Data init is accessible", () => {
-                    expect(Game.Data.init()).toBe(true);
-                });
-
-                it("Game.Model init is accesible", () => {
-                    expect(Game.Model.init()).toBe(true);
-                });
+                // it("Fiche object hover class added", () => {
+                    
+                // });
             });
         </script>
     </body>

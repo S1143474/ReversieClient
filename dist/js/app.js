@@ -120,6 +120,7 @@ var Fiche = /*#__PURE__*/function () {
     this._id = id;
     this.x = this._id % 8;
     this.y = Math.floor(this._id / 8);
+    console.log(item);
   }
 
   _createClass(Fiche, [{
@@ -293,8 +294,8 @@ Game.Data = function () {
 
 Game.Model = function () {
   var configMap = {
-    baseUrl: null //token: "f20407ce-037f-41d6-98cd-ab0889c12536"
-
+    baseUrl: null,
+    token: "0a232769-af48-455e-a208-242456287d69"
   };
 
   var privateInit = function privateInit(baseUrl) {
@@ -317,8 +318,8 @@ Game.Model = function () {
     });
   };
 
-  var _getGameReversiViaSpelToken = function _getGameReversiViaSpelToken(token) {
-    var result = Game.Data.get(configMap.baseUrl + "Spel/" + token);
+  var _getGameReversiViaSpelToken = function _getGameReversiViaSpelToken() {
+    var result = Game.Data.get(configMap.baseUrl + "Spel/" + configMap.token);
     return result.then(function (result) {
       return result;
     });
@@ -351,7 +352,7 @@ Game.Reversi = function () {
 
     Game.Model.getGameReversiViaSpelToken().then(function (result) {
       // set starting player
-      configMap.currentPlayer = result.aandeBeurt; //game_info_current_turn = 
+      configMap.currentPlayer = result.beurt; //game_info_current_turn = 
 
       for (var i = 0; i < result.bord.length; i++) {
         $("#game_table_body").append('<tr>');
