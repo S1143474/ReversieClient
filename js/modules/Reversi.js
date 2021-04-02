@@ -45,16 +45,16 @@ Game.Reversi = (() => {
             });
         });       
 
-        return true;
+        return true; 
     };
 
-    let sendFiche = (fiche) => {
+    let sendFiche = (fiche, currentPlayerToken) => {
         let data = {
             HasPassed: false,
             X: fiche.x,
             Y: fiche.y,
             Token: null,
-            SpelerToken: "f20407ce-037f-41d6-98cd-ab0889c12536"
+            SpelerToken: "currentPlayerToken"
         }
 
         Game.Model.putNewMove(data).then(result => {
@@ -67,7 +67,7 @@ Game.Reversi = (() => {
                     let tempFiche = configMap.fiches.find(f => f.x == result.cells[i].x && f.y == result.cells[i].y);
 
                     tempFiche.flip();
-                    console.log(tempFiche);
+                    console.log(tempFiche); 
                 }
 
                 //console.log(fichesToTurn);

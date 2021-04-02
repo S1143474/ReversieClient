@@ -11,8 +11,8 @@ body {
 
     width: 80%;
 
-    left: 50%;
-    transform: translateX(-50%);
+    // left: 50%;
+    // transform: translateX(-50%);
 
     background-color: white;
 
@@ -24,7 +24,8 @@ body {
     position: relative;
     display: inline-block;
 
-    width: 55%;
+    width: 35vw;
+    height: 35vw;
 
     margin-left: 4px;
     margin-bottom: 4px;
@@ -36,15 +37,12 @@ body {
 .container__game__info {
     position: relative;
     display: inline-block;
-
-    width: 40%;
-
+    width: 37%;
+    height: auto;
     vertical-align: top;
-
-    margin-inline: 2%;
-    padding: 2%;
-
-    @extend %test-border;
+    margin-left: 1%;
+    margin-right: 0%;
+    padding-bottom: 2%;
 }
 
 .game__info__player {
@@ -53,7 +51,7 @@ body {
 
     width: 100%;
         
-    @extend %test-border;
+    // @extend %test-border;
 }
 
 .game__info__player__name {
@@ -80,17 +78,17 @@ body {
     margin: 2px;
 
     background-color: $background-color;
-    border: 8px solid $border-color;
+    border: .5vw solid $border-color;
 }
 
 tr {
-    height: 5vw;
+    height: 10%;
 }
 
 td {
     border: 2px solid $dark-border-color;
     text-align: center;
-    width: 5vw;
+    width: 10%;
 }
 
 .fiche {

@@ -4,14 +4,13 @@ body {
 .container {
   position: relative;
   width: 80%;
-  left: 50%;
-  transform: translateX(-50%);
   background-color: white; }
 
 .container__game {
   position: relative;
   display: inline-block;
-  width: 55%;
+  width: 35vw;
+  height: 35vw;
   margin-left: 4px;
   margin-bottom: 4px;
   padding: 0px; }
@@ -19,10 +18,12 @@ body {
 .container__game__info {
   position: relative;
   display: inline-block;
-  width: 40%;
+  width: 37%;
+  height: auto;
   vertical-align: top;
-  margin-inline: 2%;
-  padding: 2%; }
+  margin-left: 1%;
+  margin-right: 0%;
+  padding-bottom: 2%; }
 
 .game__info__player {
   position: relative;
@@ -47,15 +48,15 @@ body {
   height: 100%;
   margin: 2px;
   background-color: rgba(20, 160, 46, 0.5);
-  border: 8px solid #067326; }
+  border: 0.5vw solid #067326; }
 
 tr {
-  height: 5vw; }
+  height: 10%; }
 
 td {
   border: 2px solid #014615;
   text-align: center;
-  width: 5vw; }
+  width: 10%; }
 
 .fiche {
   display: block;
@@ -79,7 +80,7 @@ td {
 #game_table_body tr td div {
   pointer-events: none; }
 
-.container, .container__game__info, .game__info__player {
+.container {
   border: 2px solid lightgrey;
   border-radius: 8px; }
 

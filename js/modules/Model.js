@@ -2,7 +2,7 @@ Game.Model = (() => {
     
     let configMap = {
         baseUrl: null,
-        token: "f20407ce-037f-41d6-98cd-ab0889c12536"
+        //token: "f20407ce-037f-41d6-98cd-ab0889c12536"
     };
 
     const privateInit = (baseUrl) => {
@@ -25,8 +25,8 @@ Game.Model = (() => {
         });
     };
 
-    const _getGameReversiViaSpelToken = () => {
-        let result = Game.Data.get(configMap.baseUrl + "Spel/" + configMap.token);
+    const _getGameReversiViaSpelToken = (token) => {
+        let result = Game.Data.get(configMap.baseUrl + "Spel/" + token);
 
         return result.then(result => {
             return result;

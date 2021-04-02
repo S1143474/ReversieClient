@@ -293,8 +293,8 @@ Game.Data = function () {
 
 Game.Model = function () {
   var configMap = {
-    baseUrl: null,
-    token: "f20407ce-037f-41d6-98cd-ab0889c12536"
+    baseUrl: null //token: "f20407ce-037f-41d6-98cd-ab0889c12536"
+
   };
 
   var privateInit = function privateInit(baseUrl) {
@@ -317,8 +317,8 @@ Game.Model = function () {
     });
   };
 
-  var _getGameReversiViaSpelToken = function _getGameReversiViaSpelToken() {
-    var result = Game.Data.get(configMap.baseUrl + "Spel/" + configMap.token);
+  var _getGameReversiViaSpelToken = function _getGameReversiViaSpelToken(token) {
+    var result = Game.Data.get(configMap.baseUrl + "Spel/" + token);
     return result.then(function (result) {
       return result;
     });
@@ -389,13 +389,13 @@ Game.Reversi = function () {
     return true;
   };
 
-  var sendFiche = function sendFiche(fiche) {
+  var sendFiche = function sendFiche(fiche, currentPlayerToken) {
     var data = {
       HasPassed: false,
       X: fiche.x,
       Y: fiche.y,
       Token: null,
-      SpelerToken: "f20407ce-037f-41d6-98cd-ab0889c12536"
+      SpelerToken: "currentPlayerToken"
     };
     Game.Model.putNewMove(data).then(function (result) {
       if (result.executed === true) {
