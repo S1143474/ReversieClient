@@ -1,4 +1,7 @@
+
 describe("Fiche", () => {
+    import {Fiche} from '../dist/js/app.js';
+
     it("Fiche object exists", () => {
         // Arrange
         let fiche = new Fiche("<td><div class='fiche'></div></td>", 1);
