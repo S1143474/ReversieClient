@@ -1,6 +1,6 @@
 
 describe("Fiche", () => {
-    import {Fiche} from '../dist/js/app.js';
+    import '../dist/js/app.js';
 
     it("Fiche object exists", () => {
         // Arrange
