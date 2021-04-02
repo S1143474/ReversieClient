@@ -192,8 +192,9 @@ var Fiche = /*#__PURE__*/function () {
   }]);
 
   return Fiche;
-}(); // Communication with server
+}();
 
+exports.Fiche = Fiche; // Communication with server
 
 Game.Data = function () {
   var configMap = {

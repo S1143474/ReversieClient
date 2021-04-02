@@ -70,3 +70,5 @@ class Fiche {
         }
     };
 }
+
+exports.Fiche = Fiche;
