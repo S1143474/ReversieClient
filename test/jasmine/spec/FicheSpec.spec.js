@@ -1,5 +1,11 @@
+const { Fiche } = require('./helpers/app.js');
+
 describe("Fiche", () => {
 
+    beforeEach(() => {
+        setFixtures('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>');
+    });
+    
     it("Fiche object exists", () => {
         // Arrange
         let fiche = new Fiche("<td><div class='fiche'></div></td>", 1);

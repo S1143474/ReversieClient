@@ -31,11 +31,13 @@
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-order": "^1.2.0",
-    "gulp-sass": "^4.1.0"
+    "gulp-sass": "^4.1.0",
+    "jsdom": "^16.5.2"
   },
   "dependencies": {
     "browser-sync": "^2.26.14",
     "express": "^4.17.1",
+    "jasmine-jquery": "^2.1.1",
     "jasmine-node": "^3.0.0",
     "request": "^2.88.2"
   }

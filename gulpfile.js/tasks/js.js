@@ -12,6 +12,7 @@ const js = (filesJs, filesJsOrder) => {
                 presets: ['@babel/preset-env']
             }))
             .pipe(dest('./dist/js'))
+            .pipe(dest('./test/jasmine/spec/helpers'))
     };
 };
 

@@ -1,5 +1,6 @@
 body {
-  background-color: rgba(20, 160, 46, 0.5); }
+  background-color: rgba(20, 160, 46, 0.5);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
 .container {
   position: relative;
