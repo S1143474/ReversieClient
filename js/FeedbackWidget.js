@@ -11,7 +11,7 @@ class FeedbackWidget {
 
     show(message, type) {
         let element = document.getElementById(this._elementId);
-        debugger;
+
         if (message instanceof String || typeof message === 'string') {
             $(element).find(".alert__title").text(message);
             $(element).find(".alert__message").text(null);
@@ -49,10 +49,23 @@ class FeedbackWidget {
     log(message) {
         let localStorage = window.localStorage;
 
-        localStorage.setItem(this._key, JSON.stringify(message));
+        if (localStorage.getItem(this._key) != null) {
+            let temp = JSON.parse(localStorage.getItem(this._key));
+
+            temp.push(message);
+
+            if (temp.length > 10) {
+                temp.shift();
+            }
+
+            localStorage.setItem(this._key, JSON.stringify(temp));
+        } else {
+            console.log("This key is used for the first time")
+            localStorage.setItem(this._key, "[" + JSON.stringify(message) + "]");
+        }
     }
 
     removeLog() {
-        
+        localStorage.removeItem(this._key);
     }
 }
