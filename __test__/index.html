@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine/jasmine.css">
+
+    <script type="text/javascript" src="jasmine/lib/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine/boot.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="../js/FeedbackWidget.js"></script>
+
+  </head>
+  <body>
+    <div id="feedback-success" class="alert alert-success" role="alert" style="display: none">
+      <p>Veel succes met deze module!</p>
+    </div>
+
+    <button id="button">Click Me!</button>
+    <script>
+      beforeAll(function(done) {
+        $(function(){
+          done();
+        });
+      });
+
+      describe("FeedbackWidget", () => {
+
+        it("contains a DOM element", () => {
+          expect($("#feedback-success")).toBeDefined();
+          expect($("#feedback-success").attr("style")).toBe("display: none");
+        });
+
+        it("renders the text given in the show method", () => {
+          let feedbackWidget = new FeedbackWidget("feedback-success");
+
+          feedbackWidget.show("test");
+          expect($("#feedback-success").text()).toBe("test");
+          feedbackWidget.hide();
+        });
+
+        it("it renders the ", () => {
+          let feedbackWidget = new FeedbackWidget("feedback-success");
+
+          feedbackWidget.show("test");
+          expect($("#feedback-success").text()).toBe("test");
+          feedbackWidget.hide();
+        });
+      });
+
+      describe("A suite", function() {
+        it("contains spec with an expectation", function() {
+          expect(true).toBe(true);
+        });
+      });
+
+      describe("Application initialisation", function() {
+        it("Method init returns true", function() {
+          const result = myApp.init();
+          expect(result).toBe(true);
+        });
+      });
+
+
+    </script>
+
+
+  </body>
+</html>
