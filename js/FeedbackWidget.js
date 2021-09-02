@@ -55,6 +55,7 @@ class FeedbackWidget {
             temp.push(message);
 
             if (temp.length > 10) {
+                // Remove first item in JSON array
                 temp.shift();
             }
 
@@ -67,5 +68,16 @@ class FeedbackWidget {
 
     removeLog() {
         localStorage.removeItem(this._key);
+    }
+
+    history() {
+        // TODO: Maby make it that the history is shown in order with the feedback widget.
+        // assign the value off feedback_widget to logHistory variable if not null;
+        let strLogHistory = localStorage.getItem(this._key) ?? [];
+        let logHistory = JSON.parse(strLogHistory);
+
+        for (let i = 0; i < logHistory.length; i++) {
+            console.log(`${logHistory[i]['type']} - ${logHistory[i]['message']['title']} : ${logHistory[i]['message']['msg']}`);
+        }        
     }
 }
