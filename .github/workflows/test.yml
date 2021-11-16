@@ -27,3 +27,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test
+
+    - name: Actions Status Discord
+      uses: sarisia/actions-status-discord@v1.8.6
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        title: "deploy"
+        description: "Build and deploy to GitHub Pages"
+        color: 0x0000ff
+        username: GitHub Actions
+
