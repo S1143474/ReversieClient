@@ -1,0 +1,27 @@
+{
+  "name": "reversieclient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S1143474/ReversieClient.git"
+  },
+  "author": "Bas Schimmel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S1143474/ReversieClient/issues"
+  },
+  "homepage": "https://github.com/S1143474/ReversieClient#readme",
+  "devDependencies": {
+    "jasmine": "^3.10.0",
+    "jasmine-browser-runner": "^0.9.0",
+    "jasmine-core": "^3.10.1"
+  }
+}
