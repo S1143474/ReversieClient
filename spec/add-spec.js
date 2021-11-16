@@ -8,6 +8,6 @@ describe("Addition", () => {
     });
 
     it("can 6 minus 3", () => {
-        expect(6 - 3).toBe(2);
+        expect(6 - 3).toBe(3);
     });
 });
