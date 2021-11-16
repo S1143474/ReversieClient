@@ -30,9 +30,8 @@ jobs:
 
     - name: Actions Status Discord
       uses: sarisia/actions-status-discord@v1.8.6
-      if: always()
+      if: ${{ failure() }}
       with:
-        if: ${{ failure() }}
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         title: "deploy"
         description: "Build and deploy to GitHub Pages"
