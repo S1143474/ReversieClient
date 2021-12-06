@@ -28,7 +28,7 @@ jobs:
     - run: npm ci
     - run: npm test
 
-    - name: Actions Status Discord
+    - name: The tests failed
       uses: sarisia/actions-status-discord@v1.8.6
       if: ${{ failure() }}
       with:

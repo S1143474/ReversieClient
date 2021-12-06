@@ -10,11 +10,32 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="../js/FeedbackWidget.js"></script>
+    <script type="text/javascript" src="../js/modules/Game.js"></script>
+    <script type="text/javascript" src="../js/modules/Reversi.js"></script>
+    <script type="text/javascript" src="../js/modules/Data.js"></script>
+    <script type="text/javascript" src="../js/modules/Model.js"></script>
 
   </head>
   <body>
-    <div id="feedback-success" class="alert alert-success" role="alert" style="display: none">
-      <p>Veel succes met deze module!</p>
+    <div id="feedback-success" class="alert " role="alert" style="display: none;">
+      <div class="alert__line"></div>
+      
+      <div class="alert__content">
+          <div class="alert__icon">
+              <span class="material-icons">priority_high</span>
+              <span class="material-icons">check</span>
+          </div>
+          <h3 class="alert__title">Je komt er wel!</h3>
+          <p class="alert__message">Gamerss, welkom!</p>
+          <button class="alert__close">
+              <span class="material-icons">close</span>
+          </button>
+      </div>
+
+      <div class="alert__action">
+          <button class="alert__btn alert__accept"><div>Akkoord</div></button>
+          <button class="alert__btn alert__decline"><div>Weigeren</div></button>
+      </div>
     </div>
 
     <button id="button">Click Me!</button>
@@ -29,23 +50,43 @@
 
         it("contains a DOM element", () => {
           expect($("#feedback-success")).toBeDefined();
-          expect($("#feedback-success").attr("style")).toBe("display: none");
+          expect($("#feedback-success").attr("style")).toBe("display: none;");
         });
 
         it("renders the text given in the show method", () => {
           let feedbackWidget = new FeedbackWidget("feedback-success");
 
+
           feedbackWidget.show("test");
-          expect($("#feedback-success").text()).toBe("test");
+          let element = $("#feedback-success").find(".alert__title");
+
+          expect(element.text()).toBe("test");
           feedbackWidget.hide();
         });
 
-        it("it renders the ", () => {
-          let feedbackWidget = new FeedbackWidget("feedback-success");
+      });
 
-          feedbackWidget.show("test");
-          expect($("#feedback-success").text()).toBe("test");
-          feedbackWidget.hide();
+      describe("Game", () => {
+        it("can use the const Game", () => {          
+          expect(Game).toBeDefined();
+        });
+      });
+
+      describe("Game.Reversi", () => {
+        it("contains an init method", () => {
+          expect(Game.Reversi.init()).toBeDefined();
+        });
+      });
+
+      describe("Game.Data", () => {
+        it("contains an init method", () => {
+          expect(Game.Data.init()).toBeDefined();
+        });
+      });
+
+      describe("Game.Model", () => {
+        it("contains an init method", () => {
+          expect(Game.Model.init()).toBeDefined();
         });
       });
 
