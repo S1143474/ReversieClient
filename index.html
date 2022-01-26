@@ -51,6 +51,7 @@
 
         <button id="button">Click Me!</button>
         <script>
+             
             $(() => {
 
                 const afterInit = () => {
@@ -59,13 +60,16 @@
 
                 Game.init(afterInit);
 
-                let feedbackWidget = new FeedbackWidget("feedback-success");
+                
+               
+            });
+            let feedbackWidget = new FeedbackWidget("feedback-success");
 
-                $("#button").on("click", () => {
+            $("#button").on("click", () => {
+                    console.log("gamer?")
                     //feedbackWidget.show("Je gegevens konden niet worden opgehaald. Zo jammer. Probeer het later nog eens.", "error");
                     feedbackWidget.show({'title': 'Deelnemen Reversi?', 'msg': 'Een zekere wil deelnemen aan jouw spel. Geef akkoord'}, "success");
                 });
-            });
         </script>
     </body>
 </html>

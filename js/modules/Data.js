@@ -1,7 +1,10 @@
 Game.Data = (() => {
-    
+
     let configMap = {
         apiKey: '',
+        hubUrl: '/reversiHub',
+        hubConnection: '',
+
         mock: [
             {
                 url: 'api/Spel/Beurt/1',
@@ -10,7 +13,26 @@ Game.Data = (() => {
         ],
     };
 
-    let stateMap = { environment: 'development' };
+    let stateMap = { 
+        environment: 'development'
+    };
+
+    const listen = (hubMethodName, callback, ...others) => {
+        console.log("Listening to: ", hubMethodName);
+        configMap.hubConnection.on(hubMethodName, (...others) => {
+            console.log(others);
+            callback(...others);
+        });
+    };
+
+    const start = () => {
+        try {
+            configMap.hubConnection.start();
+        } catch (error) {
+            console.debug(error);
+            setTimeout(start, 3000);
+        }
+    };
 
     const get = (url) => {
         return (stateMap.environment == 'development') ? getMockData(url) : $.get(url)
@@ -32,6 +54,35 @@ Game.Data = (() => {
     const privateInit = (environment) => {
         console.log("Data: Init");
 
+        $("#reversiboardform").on("submit", (event) => {
+            event.preventDefault();
+            clickAudio.play();
+        
+            let element = document.getElementById("extra-info");
+            element.textContent = null;
+            // console.log(event);
+            let x = parseInt(event.originalEvent.submitter.getAttribute('x'));
+            let y = parseInt(event.originalEvent.submitter.getAttribute('y'));
+        
+            let data = {
+                x: x,
+                y: y,
+                hasPassed: false
+            };
+        
+            // console.log("X:", x);
+            // console.log("Y:", y);
+
+            configMap.hubConnection.invoke("OnMove", data);
+        
+            /*return false;*/
+        });
+        configMap.hubConnection = new signalR.HubConnectionBuilder().withUrl(configMap.hubUrl).build();
+        configMap.hubConnection.onclose(async () => {
+            await start();
+        });
+        start();
+        
         if (environment != 'production' && environment != 'development')
             throw new Error('De environment welke gebruikt dient te worden bestaat niet.');
         
@@ -39,9 +90,12 @@ Game.Data = (() => {
 
         return true;
     };
+
+    
     
     return {
         init: privateInit,
-        get: get
+        get: get,
+        listen: listen
     };
 })();

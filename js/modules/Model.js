@@ -5,7 +5,18 @@ Game.Model = (() => {
     };
 
     const privateInit = () => {
+        Game.Data.init('development');
+
+        Game.Data.listen("StartGame", () => {});
+        Game.Data.listen("Redirect", () => {}, "url");
+
+        // Game.Data.listen("OnMove", (aanDeBeurt) => { console.log(aanDeBeurt); }, "aanDeBeurt");
         return true;
+    };
+
+    const _listen = (on, callback) => {
+        // TODO: Checking possibilities or something.
+        Game.Data.listen(on, callback)
     };
 
     const _getGameState = () => {
@@ -17,8 +28,11 @@ Game.Model = (() => {
         });
     };
 
+    
+
     return {
         init: privateInit,
+        listen: _listen,
         getGameState: _getGameState,
     };
 })();

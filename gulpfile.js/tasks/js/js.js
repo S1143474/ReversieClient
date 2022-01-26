@@ -8,8 +8,22 @@ const js = (backendPath, files) => {
         return src(files)
             .pipe(order(files, {base: './'}))
             .pipe(concat('app.js'))
+            // .pipe(babel({
+            //     plugins: ["@babel/plugin-transform-runtime"],
+            //     presets: ['@babel/preset-env']
+            // }))
             .pipe(babel({
-                presets: ['@babel/preset-env']
+                presets: [
+                    [
+                        '@babel/preset-env',
+                        // use targets to fix async and await calls for hub implementation.
+                        {
+                            targets: {
+                                esmodules: true,
+                            }
+                        }
+                    ]
+                ]
             }))
             .pipe(dest('./dist/js'))
             .pipe(dest(backendPath + 'js'));

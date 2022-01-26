@@ -22,7 +22,6 @@ class FeedbackWidget {
         }
         
         // Alter alert based on type
-        debugger;
         element.classList.add((type == "success") ? 'alert-success' : 'alert-danger');
         if (type == "success") {
             element.classList.add("alert-hover");

@@ -1,5 +1,5 @@
 module.exports = {
-    localServerProjectPath : '../../../source/repos/ReversiMvcApp/wwwroot/',
+    localServerProjectPath : '../../../source/repos/ReversiMvcApp/WebUI/wwwroot/',
     files: {
         js: [
             'js/*.js',
