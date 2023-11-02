@@ -31,12 +31,21 @@
     "gulp-babel": "^8.0.0",
     "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^5.0.2",
+    "gulp-merge": "^0.1.1",
     "gulp-order": "^1.2.0",
     "gulp-sass": "^5.0.0",
+    "gulp-uglify": "^3.0.2",
     "gulp-watch": "^5.0.1",
+    "gulp-wrap": "^0.15.0",
     "jasmine": "^3.10.0",
     "jasmine-browser-runner": "^0.9.0",
     "jasmine-core": "^3.10.1",
+    "merge-stream": "^2.0.0",
     "regenerator-runtime": "^0.13.9"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.0"
   }
 }
