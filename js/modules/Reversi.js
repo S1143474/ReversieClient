@@ -1,80 +1,94 @@
 Game.Reversi = (() => {
-
     let configMap = {
-        currentPlayer: '1',
-        fiches: []
+
     };
 
-    const privateInit = (baseUrl) => {
-        Game.Model.init(baseUrl);
-        // Setup Board
-        Game.Model.getGameReversiViaSpelToken().then(result => {
-            // set starting player
-            configMap.currentPlayer = result.beurt;
+    let stateMap = {
+        orignalRoles: {
+            Speler: [],
+            Moderator: [],
+            Admin: [],
+        },
+        changedRoles: [],
+    };
 
-            //game_info_current_turn = 
+    // Assign event listeners to the select input for changing the roles.
+    const _assignEventListeners = () => {
+        let currentLocation = window.location.pathname.split('/')[2];
 
-            for (let i = 0; i < result.bord.length; i++) {
-                $("#game_table_body").append('<tr>');
-                let row =  $("#game_table_body").children().eq(i);
+        if (currentLocation !== "AsignRoles")
+            return;
 
-                for (let j = 0; j < result.bord[i].length; j++) {
-                    // Empty cell
-                    if (result.bord[i][j] == 0) row.append('<td><div class="fiche"></div></td>');
+        var rows = document.getElementsByTagName("table")[0].rows;
+        // var last = rows[rows.length - 1];
+        // var cell = last.cells[0];
+        // var value = cell.innerHTML
+   
+        for (let i = 1; i < rows.length; i++) {
+            let role = rows[i].cells[2].getElementsByTagName("select")[0].value;
+            let guid = rows[i].cells[0].getElementsByTagName("input")[0].value
 
-                    // White Fiche
-                    if (result.bord[i][j] === 1) $("#game_table_body").children().eq(i).append('<td><div class="fiche fiche__white"></div></td>');
-                    
-                    // Black Fiche
-                    if (result.bord[i][j] === 2) $("#game_table_body").children().eq(i).append('<td><div class="fiche fiche__black"></div></td>');
+            stateMap.orignalRoles[role].push(guid);
+
+            Game.ComponentEvents.addOnChange(rows[i].cells[2], (component, event) => {                
+                let user = stateMap.changedRoles.find(el => el.id === guid)
+                if (user === undefined) {
+                    stateMap.changedRoles.push({id: guid, role: component.value})
+                } else {
+                    user.role = component.value;
                 }
-                $("#game_table_body").append('</tr>');
-            }
-
-            let cells = $('#game_table_body').find('td');
-
-            // Set cell listeners
-            cells.each((index, item) => { 
-                let fiche = new Fiche(item, index);
-                configMap.fiches.push(fiche);  
-
-                $(item).on('mouseover', () => { fiche.hoverFiche(configMap.currentPlayer) });
-                $(item).on('mouseout', () => { fiche.hoverOffFiche(configMap.currentPlayer) });
-                $(item).on('mousedown', () => { sendFiche(fiche); /*fiche.showFiche(configMap.currentPlayer);*/ })    
+                let inputList = document.getElementById("changeListInput");
+                inputList.value = JSON.stringify(stateMap.changedRoles);
+                // Now that atleast one change has been made we can show the save butotn
+                _showSaveButton();
             });
-        });       
+        }
+    }
 
-        return true; 
+    const _submitRoleChange = () => {
+        console.log("Submit: ", stateMap.changedRoles);
     };
 
-    let sendFiche = (fiche, currentPlayerToken) => {
-        let data = {
-            HasPassed: false,
-            X: fiche.x,
-            Y: fiche.y,
-            Token: null,
-            SpelerToken: "currentPlayerToken"
-        }
+    // Show the save button function
+    const _showSaveButton = () => {
+        let saveBtn = document.getElementById("savechangesbtn");
+        saveBtn.style.display = "block";
+    };
 
-        Game.Model.putNewMove(data).then(result => {
-            if (result.executed === true) { 
-                fiche.showFiche(configMap.currentPlayer); 
+    // Function to retrieve a random dad joke from the API module.
+    // It also assings the joke to a generated template
+    const getRandomJokeTemplate = async () => {
+        let jokeJson = await Game.API.getRandomDadJoke();
+        console.log(jokeJson);
+        if (jokeJson === undefined)
+            return;
 
-                //console.log(result.cells[0]);
-                for (let i = 0; i < result.cells.length; i++) {
+        let dadjoke = jokeJson.joke;
 
-                    let tempFiche = configMap.fiches.find(f => f.x == result.cells[i].x && f.y == result.cells[i].y);
-
-                    tempFiche.flip();
-                    console.log(tempFiche); 
-                }
-
-                //console.log(fichesToTurn);
-            }
+        let jokeTemplate = Game.Template.parseTemplate("dadjoke.randomdadjoke", {
+            joke: dadjoke
         });
+
+        return jokeTemplate;
+    };
+
+    // Dipslay the dad joke that has ben generated through a template
+    const displayJoke = async () => {
+        let template = await getRandomJokeTemplate()
+
+        let dadJokeHtml = $("#current-dad-joke");
+        dadJokeHtml.html(template);
+    };
+
+    const privateInit = () => {
+        _assignEventListeners();
+
+        Game.ComponentEvents.addClick("savechangesbtn", _submitRoleChange)
+        return true;
     };
 
     return {
-        init: privateInit
+        init: privateInit,
+        displayJoke,
     }
 })();

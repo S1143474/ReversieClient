@@ -5,9 +5,9 @@ name: Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ new ]
   pull_request:
-    branches: [ master ]
+    branches: [ new ]
 
 jobs:
   test:
@@ -27,3 +27,24 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test
+
+    - name: The tests failed
+      uses: sarisia/actions-status-discord@v1.8.6
+      if: ${{ failure() }}
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        title: "deploy"
+        description: "Build and deploy to GitHub Pages"
+        color: 0xff0000
+        username: ${{ env.GITHUB_REF_NAME }}
+     
+    - name: The tests succeeded
+      uses: sarisia/actions-status-discord@v1.8.6
+      if: ${{ success() }}
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        title: "deploy"
+        description: "Build and deploy to GitHub Pages"
+        color: 0x00ff00
+        username: ${{ env.GITHUB_REF_NAME }}
+

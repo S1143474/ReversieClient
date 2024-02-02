@@ -1,50 +1,36 @@
 Game.Model = (() => {
-    
+
     let configMap = {
-        baseUrl: null,
-        token: "0a232769-af48-455e-a208-242456287d69"
+        
     };
 
-    const privateInit = (baseUrl) => {
-        configMap.baseUrl = baseUrl;
+    const privateInit = () => {
+        Game.Data.init('production');
 
-        _getGameReversiViaSpelToken();
+        Game.Data.listen("StartGame", () => {});
+        Game.Data.listen("Redirect", () => {}, "url");
         return true;
     };
 
+    // Model Function Listener to pass through the data
+    const _listen = (on, callback) => {
+        // TODO: Checking possibilities or something and validate data.
+        Game.Data.listen(on, callback)
+    };
+
+    // Function to retrieve Current GameState
     const _getGameState = () => {
-        // Aanvraag via Game.Data
-        let gameState = Game.Data.get(configMap.baseUrl + "Spel/Beurt/" + configMap.token);
-        return gameState.then(result => { 
-            if (result.beurt > 2 || result.beurt < 0) {
-                throw new Error("De gameState waarde ligt buiten bereik");
-            } else {
-                return result.beurt;
+        return Game.Data.get('api/Spel/Beurt/1').then(result => {
+            if (result != null && result[0].data != null && result[0].data >= 0 && result[0].data <= 2) {
+                return result[0];
             }
+            throw new Error('Er ging iets mis met het opvragen van de huidige gamestate.');
         });
     };
-
-    const _getGameReversiViaSpelToken = () => {
-        let result = Game.Data.get(configMap.baseUrl + "Spel/" + configMap.token);
-
-        return result.then(result => {
-            return result;
-        });
-    };
-
-    const _putNewMove = (data) => {
-        data.Token = configMap.token;
-        let result = Game.Data.put(configMap.baseUrl + "Spel/Zet", data)
-
-        return result.then(r => {
-            return r;
-        });
-    }
 
     return {
         init: privateInit,
+        listen: _listen,
         getGameState: _getGameState,
-        getGameReversiViaSpelToken: _getGameReversiViaSpelToken,
-        putNewMove: _putNewMove
-    }
+    };
 })();

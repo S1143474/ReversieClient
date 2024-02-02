@@ -1,0 +1,1 @@
+const iconText = (icon, text) => `<i class='material-icons'>${icon}</i> ${text}`;

@@ -1,23 +1,18 @@
 {
   "name": "reversieclient",
   "version": "1.0.0",
-  "description": "Reversie Client Game",
-  "main": "gulpfile.js",
+  "description": "",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node test/jasmine/spec"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/S1143474/ReversieClient.git"
   },
-  "keywords": [
-    "Reversie",
-    "Reversie-Game",
-    "Game"
-  ],
   "author": "Bas Schimmel",
   "license": "ISC",
   "bugs": {
@@ -25,11 +20,20 @@
   },
   "homepage": "https://github.com/S1143474/ReversieClient#readme",
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
+    "@babel/plugin-transform-async-to-generator": "^7.16.8",
+    "@babel/preset-env": "^7.16.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
+    "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^5.0.2",
+    "gulp-merge": "^0.1.1",
     "gulp-order": "^1.2.0",
     "gulp-sass": "^4.1.0",
     "jsdom": "^16.5.2"

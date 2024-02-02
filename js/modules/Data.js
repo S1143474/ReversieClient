@@ -1,94 +1,144 @@
-// Communication with server
 Game.Data = (() => {
 
     let configMap = {
+        apiKey: '',
+        hubUrl: '/reversiHub',
+        hubConnection: '',
+
         mock: [
             {
-                url: "api/Spel/Beurt/abcdef",
-                beurt: 1
-            }, 
-            {
-                url: "api/Spel/Beurt/9ed14313-ad1c-4685-ab22-5df8ae47b8b8",
-                beurt: 2
+                url: 'api/Spel/Beurt/1',
+                data: 1,
             }
         ],
-        apiKey: "c778bc363492651972bdfdb03db2cbda"
     };
 
-    let stateMap = {
-        environment: "production"
+    let stateMap = { 
+        environment: 'production'
     };
 
-    const privateInit = (environment) => {
-        stateMap.environment = environment;
+    // Function To listen to a socket connection from the server
+    const listen = (hubMethodName, callback, ...others) => {
+        console.log("Listening to: ", hubMethodName);
+        configMap.hubConnection.on(hubMethodName, (...others) => {
+            console.log(others);
+            callback(...others);
+        });
+    };
 
-        // Check if environment is legal
-        if (stateMap.environment !== "development" && stateMap.environment !== "production") {
-            throw new Error("Ongeldig environment!");
+    // Function to start Socket/Hub connection with the server
+    const start = () => {
+        try {
+            configMap.hubConnection.start();
+        } catch (error) {
+            console.debug(error);
+            setTimeout(start, 3000);
         }
-
-        return true;
     };
 
+    // Function to retrieve an image through a GET request.
+    const getImage = (url) => {
+        return $.ajax({
+            url: url,
+            headers: { 'X-Api-Key': 'pXIbEgubhq8hsoBRXyfuRA==59cec1dOsdZ0R21p', 'Accept': 'image/jpg'},
+            success: function(result) {
+                console.log(result);
+                return result;
+            },
+            error: function ajaxError(jqXHR) {
+                console.error('Error: ', jqXHR.responseText);
+            }
+        });
+    };
+
+    // Function to retrieve specific json data provided by the server.
+    const get = (url) => {
+        return (stateMap.environment == 'development') ? getMockData(url) : $.ajax({
+            url: url, 
+            dataType: 'json', 
+            type: 'GET', 
+            contentType: 'application/json; charset=utf-8',
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+            }  
+        })
+        .then(result => {
+            console.log(result);
+            return result;
+        }).catch(error => {
+            console.error(error.message);
+        });;
+    };
+
+    // Function to retieve mock data when environment is in development mode
     const getMockData = (url) => {
-        const mockData = configMap.mock.find(item => item.url === url);
+        const mockData = configMap.mock.filter(data => data.url == url);
+
         return new Promise((resolve, reject) => {
             resolve(mockData);
         });
     };
-    
-    const get = (url) => {
-        if (stateMap.environment === "development") {
-            return getMockData(url);
-        } else if (stateMap.environment === "production") {
-            return getAjax(url).then(r => { return r; }).catch(e => { console.log(e.message); });
-        }
-    };
 
-    const put = (url, data) => {
-        if (stateMap.environment === "development") {
-            console.log("dev-env, nothing to post");
-        } else if (stateMap.environment === "production") {
-            return putAjax(url, data).then(r => { return r; }).catch(e => { console.log(e.message); })
-        }
-    }
+    const privateInit = (environment) => {
+        console.log(`Data: Init with environment: ${environment}`);
 
-    const putAjax = (url, data) => {
-        return $.ajax({
-            method: "PUT",
-            contentType: 'application/json',
-            url: url,
-            data: JSON.stringify(data),
-            dataType: 'json',
-
-            success: (response) => {
-                return response;
-            },
-            error: (response) => {
-                console.log("error");
-            }
-        })
-    };
-
-    const getAjax = (url) => {
-        return $.ajax({
-            method: "GET",
-            url: url,
-            headers: {
-                "accept": "application/json",
-            },
-            success: (response) => {
-                return response;
-            },
-            error: (response) => {
-                console.log("error");
-            }
+        // Listener for Reversi surrender button
+        $("#game-resign-button").on("click", (event) => {
+            configMap.hubConnection.invoke("OnSurrender");
         });
+
+        // Listener for Reversi Pass button
+        $("#game-pass-button").on("click", (event) => {
+            let data = {
+                x: -1,
+                y: -1,
+                hasPassed: true
+            };
+
+            configMap.hubConnection.invoke("OnMove", data);
+        });
+
+        // Listener for reversi Move button
+        $("#reversiboardform").on("submit", (event) => {
+            event.preventDefault();
+
+            // Play Click Audio
+            clickAudio.play();
+
+            let x = parseInt(event.originalEvent.submitter.getAttribute('x'));
+            let y = parseInt(event.originalEvent.submitter.getAttribute('y'));
+        
+            let data = {
+                x: x,
+                y: y,
+                hasPassed: false
+            };
+
+            configMap.hubConnection.invoke("OnMove", data);
+        });
+
+        // Setup SingalRConecction
+        configMap.hubConnection = new signalR.HubConnectionBuilder().withUrl(configMap.hubUrl).build();
+
+        // Restart Connection on close
+        configMap.hubConnection.onclose(async () => {
+            await start();
+        });
+        start();
+        
+        // Throw error if provided environment is not applicable
+        if (environment != 'production' && environment != 'development')
+            throw new Error('De environment welke gebruikt dient te worden bestaat niet.');
+        
+        stateMap.environment = environment;
+
+        return true;
     };
 
     return {
         init: privateInit,
         get: get,
-        put: put
-    }
+        getImage,
+        listen: listen
+    };
 })();

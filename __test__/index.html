@@ -1,0 +1,330 @@
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine/jasmine.css">
+
+    <script type="text/javascript" src="jasmine/lib/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine/boot.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="../js/FeedbackWidget.js"></script>
+    <script type="text/javascript" src="../js/modules/Game.js"></script>
+    <script type="text/javascript" src="../js/modules/Reversi.js"></script>
+    <script type="text/javascript" src="../js/modules/Data.js"></script>
+    <script type="text/javascript" src="../js/modules/Model.js"></script>
+    <script type="text/javascript" src="../js/utils/delay.js"></script>
+    <script type="text/javascript" src="../js/utils/IconText.js"></script>
+    <script type="text/javascript" src="../js/modules/API.js"></script>
+    <script type="text/javascript" src="../js/signalr.js"></script>
+    <script type="text/javascript" src="../js/modules/ComponentEvents.js"></script>
+    <script type="text/javascript" src="../js/modules/Template.js"></script>
+    <script type="text/javascript" src="../dist/js/vendor.js"></script>
+    <script type="text/javascript" src="../dist/js/templates.js"></script>
+  </head>
+  <body>
+    <div id="feedback-success" class="alert " role="alert" style="display: none;">
+      <div class="alert__line"></div>
+      
+      <div class="alert__content">
+          <div class="alert__icon">
+              <span class="material-icons">priority_high</span>
+              <span class="material-icons">check</span>
+          </div>
+          <h3 class="alert__title">Je komt er wel!</h3>
+          <p class="alert__message">Gamerss, welkom!</p>
+          <button class="alert__close">
+              <span class="material-icons">close</span>
+          </button>
+      </div>
+
+      <div class="alert__action">
+          <button class="alert__btn alert__accept"><div>Akkoord</div></button>
+          <button class="alert__btn alert__decline"><div>Weigeren</div></button>
+      </div>
+    </div>
+
+    <button id="button">Click Me!</button>
+    <script>
+      beforeAll(function(done) {
+        $(function(){
+          done();
+        });
+      });
+
+      describe("FeedbackWidget", () => {
+
+        it("contains a DOM element", () => {
+          expect($("#feedback-success")).toBeDefined();
+          expect($("#feedback-success").attr("style")).toBe("display: none;");
+        });
+
+        it("renders the text given in the show method", () => {
+          let feedbackWidget = new FeedbackWidget("feedback-success");
+
+
+          feedbackWidget.show("test");
+          let element = $("#feedback-success").find(".alert__title");
+
+          expect(element.text()).toBe("test");
+          feedbackWidget.hide();
+        });
+
+      });
+
+      describe("Game Module", () => {
+        it("can use the const Game", () => {          
+          expect(Game).toBeDefined();
+        });
+      });
+
+      describe("Game.Reversi Module", () => {
+        it("contains an init method", () => {
+          expect(Game.Reversi.init()).toBeDefined();
+        });
+      });
+
+      describe("Game.Data Module", () => {
+        it("contains an init method", () => {
+          expect(Game.Data.init()).toBeDefined();
+        });
+      });
+
+      describe("Game.Model", () => {
+        it("contains an init method", () => {
+          expect(Game.Model.init()).toBeDefined();
+        });
+      });
+
+      describe("Application initialisation", function() {
+        it("Method init returns true", function() {
+          const result = myApp.init();
+          expect(result).toBe(true);
+        });
+      });
+
+      describe("Utils Delay.js", () => {
+        it("should resolve after a specified delay", async (done) => {
+          const start = Date.now();
+          const delayTime = 1000; // 1 second
+
+          await delay(delayTime);
+
+          const end = Date.now();
+          const elapsed = end - start;
+
+          expect(elapsed).toBeGreaterThanOrEqual(delayTime - 10); // Allowing a 10ms margin for setTimeout accuracy
+          expect(elapsed).toBeLessThanOrEqual(delayTime + 10); // Allowing a 10ms margin for setTimeout accuracy
+
+          done();
+        });
+
+        it("should resolve immediately with a delay of 0", async (done) => {
+          const start = Date.now();
+
+          await delay(0);
+
+          const end = Date.now();
+          const elapsed = end - start;
+
+          expect(elapsed).toBeLessThanOrEqual(10); // Expect it to resolve almost immediately
+
+          done();
+        });
+      });
+
+      describe("Utils IconText.js", () => {
+        it("should return the correct HTML with icon and text", () => {
+          const icon = "star";
+          const text = "Favorite";
+
+          const result = iconText(icon, text);
+
+          expect(result).toEqual(`<i class='material-icons'>${icon}</i> ${text}`);
+        });
+
+        it("should handle empty text correctly", () => {
+          const icon = "star";
+          const text = "";
+
+          const result = iconText(icon, text);
+
+          expect(result).toEqual(`<i class='material-icons'>${icon}</i> `);
+        });
+
+        it("should handle empty icon correctly", () => {
+          const icon = "";
+          const text = "Some text";
+
+          const result = iconText(icon, text);
+
+          expect(result).toEqual(`<i class='material-icons'></i> ${text}`);
+        });
+
+        it("should handle both empty icon and text correctly", () => {
+          const icon = "";
+          const text = "";
+
+          const result = iconText(icon, text);
+
+          expect(result).toEqual(`<i class='material-icons'></i> `);
+        });
+      });
+    
+      describe("Game.API Module", () => {
+        let mockImageData;
+
+        beforeEach(() => {
+          // Create a mock for GameData.getImage to simulate image data
+          spyOn(Game.Data, 'getImage').and.returnValue(Promise.resolve(mockImageData));
+
+          // Initialize the module before each test
+          Game.API.init();
+        });
+
+        it("should fetch a random dad joke", async (done) => {
+          const dadJoke = "Why don't scientists trust atoms? Because they make up everything.";
+
+          spyOn(Game.Data, 'get').and.returnValue(Promise.resolve(dadJoke));
+
+          const joke = await Game.API.getRandomDadJoke();
+
+          expect(joke).toEqual(dadJoke);
+          done();
+        });
+
+        it("should handle errors when fetching a dad joke", async (done) => {
+          spyOn(Game.Data, 'get').and.returnValue(Promise.reject("Failed to fetch"));
+
+          try {
+            await Game.API.getRandomDadJoke();
+          } catch (error) {
+            expect(error.message).toEqual("Failed to fetch a dad joke");
+          }
+          done();
+        });
+
+        it("should handle errors when fetching and displaying an image", async (done) => {
+          mockImageData = "invalid-image-data";
+
+          const imageElement = document.createElement("img");
+
+          try {
+            await Game.API.getRandomImage(imageElement);
+          } catch (error) {
+            expect(error.message).toEqual("Failed to fetch and display a random image");
+          }
+          done();
+        });
+      });
+    
+      describe("Game.ComponentEvents Module", () => {
+        let element;
+
+        beforeEach(() => {
+          // Create a mock element for testing
+          element = document.createElement("div");
+          element.id = "test-element";
+          document.body.appendChild(element);
+
+          // Initialize the module before each test
+          Game.ComponentEvents.init();
+        });
+
+        afterEach(() => {
+          // Remove the mock element after each test
+          document.body.removeChild(element);
+        });
+
+        it("should add a click listener to an element by ID", (done) => {
+          let clicked = false;
+
+          Game.ComponentEvents.addClick("test-element", () => {
+            clicked = true;
+          });
+
+          element.click();
+
+          expect(clicked).toBe(true);
+          done();
+        });
+
+        it("should add a click listener to elements by class name", (done) => {
+          let clickedCount = 0;
+
+          const button1 = document.createElement("button");
+          button1.className = "test-class";
+          document.body.appendChild(button1);
+
+          const button2 = document.createElement("button");
+          button2.className = "test-class";
+          document.body.appendChild(button2);
+
+          Game.ComponentEvents.addClickOnClass("test-class", () => {
+            clickedCount++;
+          });
+
+          button1.click();
+          button2.click();
+
+          expect(clickedCount).toBe(2);
+          done();
+        });
+      });
+
+      describe("Game.Template Module", () => {
+          beforeEach(() => {
+            // Initialize the module before each test
+            Game.Template.init();
+          });
+
+          it("should initialize the template module", () => {
+            // Check if the Handlebars helper has been registered
+            const helpers = Handlebars.helpers;
+            expect(helpers).toBeDefined();
+            expect(helpers.ifCond).toBeDefined();
+          });
+
+          it("should get a template by name", () => {
+            const templateName = "myTemplate";
+            const templates = {
+              myTemplate: () => "My Template Content",
+            };
+
+            spa_templates.templates = templates;
+
+            const result = Game.Template.getTemplate(templateName);
+
+            expect(result).toBeDefined();
+            expect(result()).toEqual("My Template Content");
+          });
+
+          it("should parse a template with data", () => {
+            const templateName = "myTemplate";
+            const templates = {
+              myTemplate: (data) => `My Template Content: ${data}`,
+            };
+
+            spa_templates.templates = templates;
+            const data = "Hello, World!";
+
+            const result = Game.Template.parseTemplate(templateName, data);
+
+            expect(result).toEqual(`My Template Content: ${data}`);
+          });
+
+          it("should handle missing templates gracefully", () => {
+            const templateName = "nonExistentTemplate";
+            spa_templates.templates = {};
+
+            const result = Game.Template.getTemplate(templateName);
+
+            expect(result).toBeUndefined();
+          });
+        });
+    </script>
+
+
+  </body>
+</html>

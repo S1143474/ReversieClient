@@ -1,33 +1,29 @@
-const {series, parallel, watch} = require('gulp');
+
 const config = require('./config');
+const { watch, series } = require('gulp');
 
-const browserSync = require('browser-sync').create();
-
-const js = require('./tasks/js').js(config.files.js, config.filesOrderJs);
+const js = require('./tasks/js/js').js(config.localServerProjectPath, config.files.js);
 js.displayName = 'js';
 
-const sass = require('./tasks/sass').sass(config.files.sass);
-sass.displayName = 'sass';
+const vendor = require('./tasks/vendor/vendor').vendor(config.localServerProjectPath, config.files.vendor);
+const template = require('./tasks/templates/templates').template(config.localServerProjectPath, config.files.partial, config.files.template);
+// const sass = require('./tasks/sass').sass(config.localServerProjectPath, config.files.sass);
+// sass.displayName = 'sass';
 
-const html = require('./tasks/html').html(config.files.html);
-html.displayName = 'html';
+// const watchFiles = () => {
+//     watch(['./wwwroot/sass/**/*.scss', './wwwroot/sass/*.scss'], series(sass));
+// };
 
-const watchFiles = () => {
-    browserSync.init({
-        server: {
-            baseDir: 'dist',
-            index: 'html/index.html'
-        }
-    });
+const hello = function (done) {
+    console.log(`Groeten van ${config.voornaam}`)
+    done();
+}
 
-    watch(['./css/*.scss', './css/*.css', '.feature/**/*.scss'], series(sass));
-    watch(['./index.html'], html);
-    watch(['./js/*.js', './js/**/*.js'], js);
 
-    watch("./*.html").on("change", browserSync.reload);
-    watch(["./js/*.js", "./js/**/*.js"]).on("change", browserSync.reload);
-    watch(["./css/*.scss", "./css/*.css"]).on("change", browserSync.reload);
-};
+exports.default = hello;
 
-exports.build = parallel(html, sass, js/*, templates*/);
-exports.watch = watchFiles;
+exports.js = js;
+exports.template = template;
+exports.vendor = vendor;
+// exports.sass = sass;
+// exports.watch = watchFiles;
