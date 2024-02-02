@@ -24,7 +24,7 @@ Game.API = (() => {
         
         try {
             const randomCategory = configMap.imageCategories[Math.floor(Math.random() * configMap.imageCategories.length)];
-            const imageSrc = await Game.Data.getImage(`https://api.api-ninjas.com/v1/randomimage?category=${randomCategory}`);
+            const imageSrc = await Game.Data.getImage(`https://api.api-ninjas.com/v1/randomimage?catego~~ry=${randomCategory}`);
             const base64EncodedStr = imageSrc.toString('base64');
             debugger;
             const isBase64 = base64regex.test(base64EncodedStr)
