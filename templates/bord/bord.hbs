@@ -30,26 +30,3 @@ Game.Template.parseTemplate('bord.bord', {bord: [
     </tr>
     {{/each}}
 </table> 
-    {{!-- @for (var row = 0; row < @Model.Bord.Count; row++) {
-        <tr class="game__container__board__row">
-            @for (var col = 0; col < @Model.Bord[row].Count; col++)
-            {
-                <td class="game__container__board__col">
-                    @if (@Model.Bord[row][col] == 0)
-                    {
-                        <button x="@col" y="@row" type="submit" class="game__container__board__cell fiche fiche-empty" ></button>
-                    }
-
-                    @if (@Model.Bord[row][col] == 1)
-                    {
-                        <button x="@col" y="@row" type="submit" class="game__container__board__cell fiche fiche-white" ></button>
-                    }
-
-                    @if (@Model.Bord[row][col] == 2)
-                    {
-                        <button x="@col" y="@row" type="submit" class="game__container__board__cell fiche fiche-black" ></button>
-                    }
-                </td>
-            }
-        </tr>
-    } --}}
